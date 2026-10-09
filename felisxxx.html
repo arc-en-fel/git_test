@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>Indian Super League — The Clubs</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #14241c;
+            --muted: #718078;
+            --paper: #f5f4ef;
+            --green: #176b49;
+            --line: #e5e7df;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .page {
+            width: min(1120px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 27px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: .11em;
+            text-transform: uppercase;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            border-radius: 10px;
+            background: var(--green);
+            color: white;
+            font-size: 15px;
+            letter-spacing: 0;
+        }
+
+        .season {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 32px;
+            padding: 70px 0 43px;
+        }
+
+        .eyebrow {
+            margin: 0 0 15px;
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            max-width: 700px;
+            margin: 0;
+            font-size: clamp(42px, 6vw, 72px);
+            font-weight: 750;
+            letter-spacing: -.065em;
+            line-height: .98;
+        }
+
+        .intro {
+            max-width: 500px;
+            margin: 20px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .club-count {
+            min-width: 130px;
+            padding: 17px 20px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .62);
+            text-align: center;
+        }
+
+        .club-count strong {
+            display: block;
+            font-size: 34px;
+            letter-spacing: -.06em;
+            line-height: 1;
+        }
+
+        .club-count span {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .toolbar-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .search {
+            width: min(290px, 100%);
+            padding: 12px 15px;
+            border: 1px solid #dfe3db;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: var(--ink);
+            font: inherit;
+            font-size: 13px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .search:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(23, 107, 73, .12);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            padding-bottom: 66px;
+        }
+
+        .team-card {
+            position: relative;
+            display: flex;
+            min-height: 238px;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: #fff;
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-3px);
+            border-color: #d5ded6;
+            box-shadow: 0 12px 30px rgba(26, 46, 34, .08);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .team-number {
+            color: #9ba59d;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .1em;
+        }
+
+        .crest {
+            display: grid;
+            width: 98px;
+            height: 105px;
+            place-items: center;
+            align-self: center;
+            margin: -1px 0 10px;
+        }
+
+        .crest img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .crest-fallback {
+            display: grid;
+            width: 74px;
+            height: 74px;
+            place-items: center;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            color: var(--accent);
+            font-size: 19px;
+            font-weight: 900;
+            letter-spacing: -.04em;
+        }
+
+        .team-name {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 750;
+            letter-spacing: -.035em;
+            line-height: 1.25;
+        }
+
+        .team-city {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .empty-state {
+            display: none;
+            padding: 50px 20px 90px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 0 28px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        @media (max-width: 850px) {
+            .team-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 620px) {
+            .page {
+                width: min(100% - 32px, 480px);
+            }
+
+            .topbar {
+                padding: 19px 0;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 49px 0 31px;
+            }
+
+            .club-count {
+                display: flex;
+                width: fit-content;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 14px;
+            }
+
+            .club-count strong {
+                font-size: 25px;
+            }
+
+            .club-count span {
+                margin: 0;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .team-card {
+                min-height: 205px;
+                padding: 15px;
+            }
+
+            .crest {
+                width: 78px;
+                height: 84px;
+                margin: 0 0 8px;
+            }
+
+            .team-name {
+                font-size: 15px;
+            }
+
+            .toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <div class="brand"><span class="brand-mark" aria-hidden="true">IS</span> Indian Super League</div>
+            <div class="season">2025–26 season</div>
+        </header>
+
+        <main>
+            <section class="hero" aria-labelledby="page-title">
+                <div>
+                    <p class="eyebrow">The teams. The cities. The league.</p>
+                    <h1 id="page-title">Meet the clubs<br>of Indian football.</h1>
+                    <p class="intro">Explore the teams competing in the Indian Super League, from the hills of the Northeast to the coast of Kerala.</p>
+                </div>
+                <div class="club-count" aria-label="14 clubs">
+                    <strong>14</strong>
+                    <span>clubs in the league</span>
+                </div>
+            </section>
+
+            <section aria-label="Indian Super League teams">
+                <div class="toolbar">
+                    <div class="toolbar-label" id="result-count">All 14 clubs</div>
+                    <label>
+                        <span class="eyebrow" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0)">Search clubs</span>
+                        <input class="search" id="team-search" type="search" placeholder="Search clubs or cities…" autocomplete="off">
+                    </label>
+                </div>
+                <div class="team-grid" id="team-grid"></div>
+                <div class="empty-state" id="empty-state">No clubs match your search. Try another name or city.</div>
+            </section>
+        </main>
+
+        <footer>
+            <span>Indian Super League · 2025–26 club directory</span>
+            <span>Club crests shown for identification.</span>
+        </footer>
+    </div>
+
+    <script>
+        const teams = [
+            {
+                name: "Bengaluru FC",
+                city: "Bengaluru, Karnataka",
+                initials: "BFC",
+                color: "#17479e",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/5/52/Bengaluru_FC_logo.svg/330px-Bengaluru_FC_logo.svg.png"
+            },
+            {
+                name: "Chennaiyin FC",
+                city: "Chennai, Tamil Nadu",
+                initials: "CFC",
+                color: "#006a59",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/6/6c/Chennaiyin_FC_logo.svg/330px-Chennaiyin_FC_logo.svg.png"
+            },
+            {
+                name: "East Bengal FC",
+                city: "Kolkata, West Bengal",
+                initials: "EB",
+                color: "#c82825",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/1/15/East_Bengal_FC_logo.svg/330px-East_Bengal_FC_logo.svg.png"
+            },
+            {
+                name: "FC Goa",
+                city: "Goa",
+                initials: "FCG",
+                color: "#e36a25",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/2/22/FC_Goa_logo.svg/330px-FC_Goa_logo.svg.png"
+            },
+            {
+                name: "Inter Kashi",
+                city: "Varanasi, Uttar Pradesh",
+                initials: "IK",
+                color: "#b88430",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/1/10/Inter_Kashi_logo.svg/330px-Inter_Kashi_logo.svg.png"
+            },
+            {
+                name: "Jamshedpur FC",
+                city: "Jamshedpur, Jharkhand",
+                initials: "JFC",
+                color: "#b9292d",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/5/57/Jamshedpur_FC_logo.svg/330px-Jamshedpur_FC_logo.svg.png"
+            },
+            {
+                name: "Kerala Blasters FC",
+                city: "Kochi, Kerala",
+                initials: "KBFC",
+                color: "#e6b72d",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/e/e7/Kerala_Blasters_FC_logo.svg/330px-Kerala_Blasters_FC_logo.svg.png"
+            },
+            {
+                name: "Mohammedan SC",
+                city: "Kolkata, West Bengal",
+                initials: "MSC",
+                color: "#171717",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/3/3a/Mohammedan_SC_logo.svg/330px-Mohammedan_SC_logo.svg.png"
+            },
+            {
+                name: "Mohun Bagan Super Giant",
+                city: "Kolkata, West Bengal",
+                initials: "MBSG",
+                color: "#176b49",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/3/32/Mohun_Bagan_Super_Giant.svg/330px-Mohun_Bagan_Super_Giant.svg.png"
+            },
+            {
+                name: "Mumbai City FC",
+                city: "Mumbai, Maharashtra",
+                initials: "MCFC",
+                color: "#155da5",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/6/68/Mumbai_City_FC_logo.svg/330px-Mumbai_City_FC_logo.svg.png"
+            },
+            {
+                name: "NorthEast United FC",
+                city: "Guwahati, Assam",
+                initials: "NEUFC",
+                color: "#e04a31",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/7/7a/NorthEast_United_FC_logo.svg/330px-NorthEast_United_FC_logo.svg.png"
+            },
+            {
+                name: "Odisha FC",
+                city: "Bhubaneswar, Odisha",
+                initials: "OFC",
+                color: "#692b75",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/5/57/Odisha_FC_logo.svg/330px-Odisha_FC_logo.svg.png"
+            },
+            {
+                name: "Punjab FC",
+                city: "New Delhi",
+                initials: "PFC",
+                color: "#d32b36",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/1/18/Punjab_FC_2025_logo.svg/330px-Punjab_FC_2025_logo.svg.png"
+            },
+            {
+                name: "SC Delhi",
+                city: "New Delhi",
+                initials: "SCD",
+                color: "#db342c",
+                logo: "https://thumb.wikimedia.org/wikipedia/en/thumb/1/19/SC_Delhi_logo.svg/330px-SC_Delhi_logo.svg.png"
+            }
+        ];
+
+        const grid = document.getElementById("team-grid");
+        const search = document.getElementById("team-search");
+        const resultCount = document.getElementById("result-count");
+        const emptyState = document.getElementById("empty-state");
+
+        function renderTeams(query = "") {
+            const normalizedQuery = query.trim().toLowerCase();
+            const filteredTeams = teams.filter((team) =>
+                `${team.name} ${team.city}`.toLowerCase().includes(normalizedQuery)
+            );
+
+            grid.innerHTML = filteredTeams.map((team) => {
+                const number = String(teams.indexOf(team) + 1).padStart(2, "0");
+                return `
+                    <article class="team-card" style="--accent: ${team.color}">
+                        <div class="card-top">
+                            <span class="team-number">${number}</span>
+                        </div>
+                        <div class="crest">
+                            <img src="${team.logo}" alt="${team.name} crest" loading="lazy"
+                                onerror="this.onerror=null; const fallback=document.createElement('span'); fallback.className='crest-fallback'; fallback.textContent='${team.initials}'; fallback.setAttribute('aria-label','${team.name} crest'); this.replaceWith(fallback)">
+                        </div>
+                        <div>
+                            <h2 class="team-name">${team.name}</h2>
+                            <p class="team-city">${team.city}</p>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+
+            resultCount.textContent = normalizedQuery
+                ? `${filteredTeams.length} ${filteredTeams.length === 1 ? "club" : "clubs"} found`
+                : `All ${teams.length} clubs`;
+            emptyState.style.display = filteredTeams.length ? "none" : "block";
+        }
+
+        search.addEventListener("input", (event) => renderTeams(event.target.value));
+        renderTeams();
+    </script>
+</body>
+</html>
